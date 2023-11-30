@@ -1,0 +1,317 @@
+Grammar
+
+    0 $accept: s $end
+
+    1 s: NAME '=' Ex
+    2  | Ex
+
+    3 Ex: Ex '+' Ex
+    4   | Ex '-' Ex
+    5   | Ex '*' Ex
+    6   | Ex '/' Ex
+    7   | Ex '^' Ex
+    8   | '-' Ex
+    9   | '(' Ex ')'
+   10   | num
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 9
+')' (41) 9
+'*' (42) 5
+'+' (43) 3
+'-' (45) 4 8
+'/' (47) 6
+'=' (61) 1
+'^' (94) 7
+error (256)
+NAME (258) 1
+num (259) 10
+UMINUS (260)
+
+
+Nonterminals, with rules where they appear
+
+$accept (14)
+    on left: 0
+s (15)
+    on left: 1 2, on right: 0
+Ex (16)
+    on left: 3 4 5 6 7 8 9 10, on right: 1 2 3 4 5 6 7 8 9
+
+
+state 0
+
+    0 $accept: . s $end
+
+    NAME  shift, and go to state 1
+    num   shift, and go to state 2
+    '-'   shift, and go to state 3
+    '('   shift, and go to state 4
+
+    s   go to state 5
+    Ex  go to state 6
+
+
+state 1
+
+    1 s: NAME . '=' Ex
+
+    '='  shift, and go to state 7
+
+
+state 2
+
+   10 Ex: num .
+
+    $default  reduce using rule 10 (Ex)
+
+
+state 3
+
+    8 Ex: '-' . Ex
+
+    num  shift, and go to state 2
+    '-'  shift, and go to state 3
+    '('  shift, and go to state 4
+
+    Ex  go to state 8
+
+
+state 4
+
+    9 Ex: '(' . Ex ')'
+
+    num  shift, and go to state 2
+    '-'  shift, and go to state 3
+    '('  shift, and go to state 4
+
+    Ex  go to state 9
+
+
+state 5
+
+    0 $accept: s . $end
+
+    $end  shift, and go to state 10
+
+
+state 6
+
+    2 s: Ex .
+    3 Ex: Ex . '+' Ex
+    4   | Ex . '-' Ex
+    5   | Ex . '*' Ex
+    6   | Ex . '/' Ex
+    7   | Ex . '^' Ex
+
+    '+'  shift, and go to state 11
+    '-'  shift, and go to state 12
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+    '^'  shift, and go to state 15
+
+    $default  reduce using rule 2 (s)
+
+
+state 7
+
+    1 s: NAME '=' . Ex
+
+    num  shift, and go to state 2
+    '-'  shift, and go to state 3
+    '('  shift, and go to state 4
+
+    Ex  go to state 16
+
+
+state 8
+
+    3 Ex: Ex . '+' Ex
+    4   | Ex . '-' Ex
+    5   | Ex . '*' Ex
+    6   | Ex . '/' Ex
+    7   | Ex . '^' Ex
+    8   | '-' Ex .
+
+    $default  reduce using rule 8 (Ex)
+
+
+state 9
+
+    3 Ex: Ex . '+' Ex
+    4   | Ex . '-' Ex
+    5   | Ex . '*' Ex
+    6   | Ex . '/' Ex
+    7   | Ex . '^' Ex
+    9   | '(' Ex . ')'
+
+    '+'  shift, and go to state 11
+    '-'  shift, and go to state 12
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+    '^'  shift, and go to state 15
+    ')'  shift, and go to state 17
+
+
+state 10
+
+    0 $accept: s $end .
+
+    $default  accept
+
+
+state 11
+
+    3 Ex: Ex '+' . Ex
+
+    num  shift, and go to state 2
+    '-'  shift, and go to state 3
+    '('  shift, and go to state 4
+
+    Ex  go to state 18
+
+
+state 12
+
+    4 Ex: Ex '-' . Ex
+
+    num  shift, and go to state 2
+    '-'  shift, and go to state 3
+    '('  shift, and go to state 4
+
+    Ex  go to state 19
+
+
+state 13
+
+    5 Ex: Ex '*' . Ex
+
+    num  shift, and go to state 2
+    '-'  shift, and go to state 3
+    '('  shift, and go to state 4
+
+    Ex  go to state 20
+
+
+state 14
+
+    6 Ex: Ex '/' . Ex
+
+    num  shift, and go to state 2
+    '-'  shift, and go to state 3
+    '('  shift, and go to state 4
+
+    Ex  go to state 21
+
+
+state 15
+
+    7 Ex: Ex '^' . Ex
+
+    num  shift, and go to state 2
+    '-'  shift, and go to state 3
+    '('  shift, and go to state 4
+
+    Ex  go to state 22
+
+
+state 16
+
+    1 s: NAME '=' Ex .
+    3 Ex: Ex . '+' Ex
+    4   | Ex . '-' Ex
+    5   | Ex . '*' Ex
+    6   | Ex . '/' Ex
+    7   | Ex . '^' Ex
+
+    '+'  shift, and go to state 11
+    '-'  shift, and go to state 12
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+    '^'  shift, and go to state 15
+
+    $default  reduce using rule 1 (s)
+
+
+state 17
+
+    9 Ex: '(' Ex ')' .
+
+    $default  reduce using rule 9 (Ex)
+
+
+state 18
+
+    3 Ex: Ex . '+' Ex
+    3   | Ex '+' Ex .
+    4   | Ex . '-' Ex
+    5   | Ex . '*' Ex
+    6   | Ex . '/' Ex
+    7   | Ex . '^' Ex
+
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+    '^'  shift, and go to state 15
+
+    $default  reduce using rule 3 (Ex)
+
+
+state 19
+
+    3 Ex: Ex . '+' Ex
+    4   | Ex . '-' Ex
+    4   | Ex '-' Ex .
+    5   | Ex . '*' Ex
+    6   | Ex . '/' Ex
+    7   | Ex . '^' Ex
+
+    '*'  shift, and go to state 13
+    '/'  shift, and go to state 14
+    '^'  shift, and go to state 15
+
+    $default  reduce using rule 4 (Ex)
+
+
+state 20
+
+    3 Ex: Ex . '+' Ex
+    4   | Ex . '-' Ex
+    5   | Ex . '*' Ex
+    5   | Ex '*' Ex .
+    6   | Ex . '/' Ex
+    7   | Ex . '^' Ex
+
+    '^'  shift, and go to state 15
+
+    $default  reduce using rule 5 (Ex)
+
+
+state 21
+
+    3 Ex: Ex . '+' Ex
+    4   | Ex . '-' Ex
+    5   | Ex . '*' Ex
+    6   | Ex . '/' Ex
+    6   | Ex '/' Ex .
+    7   | Ex . '^' Ex
+
+    '^'  shift, and go to state 15
+
+    $default  reduce using rule 6 (Ex)
+
+
+state 22
+
+    3 Ex: Ex . '+' Ex
+    4   | Ex . '-' Ex
+    5   | Ex . '*' Ex
+    6   | Ex . '/' Ex
+    7   | Ex . '^' Ex
+    7   | Ex '^' Ex .
+
+    '^'  shift, and go to state 15
+
+    $default  reduce using rule 7 (Ex)
